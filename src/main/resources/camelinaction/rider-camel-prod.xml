@@ -1,0 +1,4 @@
+<bean id="properties"
+      class="org.apache.camel.component.properties.PropertiesComponent">
+    <property name="location" value="classpath:rider-prod.properties"/>
+</bean>
