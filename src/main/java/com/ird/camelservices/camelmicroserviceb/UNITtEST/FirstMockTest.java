@@ -6,6 +6,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit5.CamelTestSupport;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -36,6 +38,15 @@ public class FirstMockTest extends CamelTestSupport {
         quote.expectedMessageCount(1);
         template.sendBody("jms:topic:quote", "Camel rocks");
         quote.assertIsSatisfied();
+    }
+
+    @Test
+    public void testMock() throws Exception {
+        getMockEndpoint("mock:quote").expectedBodiesReceived("Hello World");
+
+        template.sendBody("jms:topic:quote", "Hello World");
+
+        assertMockEndpointsSatisfied();
     }
 
     @Test
