@@ -80,37 +80,51 @@ public class FirstMockTest extends CamelTestSupport {
 
         assertMockEndpointsSatisfied();
         //You have to assert the mock before you get the exchanges.
-        List<Exchange> exchanges =  mock.getExchanges();
-        assertEquals(2 , exchanges.size());
+        List<Exchange> exchanges = mock.getExchanges();
+        assertEquals(2, exchanges.size());
 
 
     }
 
     @Test
     public void testGap() throws Exception {
-        final MockEndpoint mock = getMockEndpoint("mock:quote");
+        MockEndpoint mock = getMockEndpoint("mock://quote");
         mock.expectedMessageCount(3);
+        mock.message(0).body().contains("A"); //testing orders
+        mock.message(1).body().contains("B");
+        mock.message(2).body().contains("C");
 
-        mock.expects(() -> {
-            int last = 0;
-            for (Exchange exchange : mock.getExchanges()) {
-                int current = exchange.getIn()
-                        .getHeader("Counter", Integer.class);
-                if (current <= last) {
-                    fail("Counter is not greater than last counter");
-                } else if (current - last != 1) {
-                    fail("Gap detected: last: " + last
-                            + " current: " + current);
-                }
-                last = current;
-            }
-        });
+        mock.expectsAscending(header("Counter")); // test the header number is in ascending order
 
-
+        //      template.sendBody("jms:topic:quote", "Hello Camel");
+        //     template.sendBody("jms:topic:quote", "Camel rocks");
+        //       template.sendBodyAndHeader("jms:topic:quote", "A", "Counter", 1);
+        //       template.sendBodyAndHeader("jms:topic:quote", "B", "Counter", 2);
 
         template.sendBodyAndHeader("jms:topic:quote", "A", "Counter", 1);
         template.sendBodyAndHeader("jms:topic:quote", "B", "Counter", 2);
         template.sendBodyAndHeader("jms:topic:quote", "C", "Counter", 4);
+        assertMockEndpointsSatisfied();
+        //You have to assert the mock before you get the exchanges.
+        List<Exchange> exchanges = mock.getExchanges();
+        assertEquals(3, exchanges.size());
+        mock.expects(new Runnable() {
+            public void run() {
+                int last = 0;
+                for (Exchange exchange : mock.getExchanges()) {
+                    int current = exchange.getIn()
+                            .getHeader("Counter", Integer.class);
+                    if (current <= last) {
+                        fail("Counter is not greater than last counter");
+                    } else if (current - last != 1) {
+                        fail("Gap detected: last: " + last
+                                + " current: " + current);
+                    }
+                    last = current;
+                }
+            }
+        });
+
         mock.assertIsNotSatisfied();
 
     }
@@ -125,31 +139,37 @@ public class FirstMockTest extends CamelTestSupport {
 
         mock.expectsAscending(header("Counter")); // test the header number is in ascending order
 
-  //      template.sendBody("jms:topic:quote", "Hello Camel");
-   //     template.sendBody("jms:topic:quote", "Camel rocks");
- //       template.sendBodyAndHeader("jms:topic:quote", "A", "Counter", 1);
- //       template.sendBodyAndHeader("jms:topic:quote", "B", "Counter", 2);
+        //      template.sendBody("jms:topic:quote", "Hello Camel");
+        //     template.sendBody("jms:topic:quote", "Camel rocks");
+        //       template.sendBodyAndHeader("jms:topic:quote", "A", "Counter", 1);
+        //       template.sendBodyAndHeader("jms:topic:quote", "B", "Counter", 2);
 
         template.sendBodyAndHeader("jms:topic:quote", "A", "Counter", 1);
         template.sendBodyAndHeader("jms:topic:quote", "B", "Counter", 2);
         template.sendBodyAndHeader("jms:topic:quote", "C", "Counter", 3);
         assertMockEndpointsSatisfied();
         //You have to assert the mock before you get the exchanges.
-        List<Exchange> exchanges =  mock.getExchanges();
-        assertEquals(3 , exchanges.size());
+        List<Exchange> exchanges = mock.getExchanges();
+        assertEquals(3, exchanges.size());
 
-        int last = 0;
-        for (Exchange exchange : mock.getExchanges()) {
-            int current = exchange.getIn()
-                    .getHeader("Counter", Integer.class);
-            if (current <= last) {
-                fail("Counter is not greater than last counter");
-            } else if (current - last != 1) {
-                fail("Gap detected: last: " + last
-                        + " current: " + current);
+        mock.expects(new Runnable() {
+            public void run() {
+                int last = 0;
+                for (Exchange exchange : mock.getExchanges()) {
+                    int current = exchange.getIn()
+                            .getHeader("Counter", Integer.class);
+                    if (current <= last) {
+                        fail("Counter is not greater than last counter");
+                    } else if (current - last != 1) {
+                        fail("Gap detected: last: " + last
+                                + " current: " + current);
+                    }
+                    last = current;
+                }
             }
-            last = current;
-        }
+        });
+
+        mock.assertIsSatisfied();
 
     }
 }
