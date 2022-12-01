@@ -31,7 +31,10 @@ public class SimpleTimerTest {
 
         AdviceWith.adviceWith(context, "simpleTimerId", routeBuilder ->{
             routeBuilder.weaveAddLast().to(mockEndpoint);
+
         });
+
+
 
         context.start();
         mockEndpoint.assertIsSatisfied();

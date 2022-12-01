@@ -47,7 +47,7 @@ public class LegacyFileRouteTest {
     @Test
     public void testFIleMoveByMockingFromEndpoint() throws Exception{
         //setup the mock
-        String expectedBody = "This is input data after mocking the from endpoint";
+        String expectedBody = "OutboundNameAddress(name=Mike, address= ON MSF3D2)";
         mockEndpoint.expectedBodiesReceived(expectedBody);
         mockEndpoint.expectedMinimumMessageCount(1);
         //Tweak the route definition
@@ -57,7 +57,8 @@ public class LegacyFileRouteTest {
         });
         //Start the context and validate if mock is asserted
         context.start();
-        producerTemplate.sendBody("direct:mockStart",expectedBody);
+        producerTemplate.sendBody("direct:mockStart","name, house_number, city, province, postal_code\n" +
+                "Mike, 111, Toronto, ON, MSF3D2");
         mockEndpoint.assertIsSatisfied();
     }
 }
