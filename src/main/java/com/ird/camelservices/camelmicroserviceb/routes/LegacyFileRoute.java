@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class LegacyFileRoute extends RouteBuilder {
 
     Logger logger = LoggerFactory.getLogger(getClass());
