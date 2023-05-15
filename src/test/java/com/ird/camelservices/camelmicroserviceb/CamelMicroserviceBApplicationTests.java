@@ -4,6 +4,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.test.junit5.CamelTestSupport;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
 import org.junit.jupiter.api.Test;
@@ -13,9 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith //allow router id reference
-class CamelMicroserviceBApplicationTests {
+class CamelMicroserviceBApplicationTests extends CamelTestSupport {
 	@Autowired
 	CamelContext context;
+
+
 
 	@EndpointInject("mock:result")
 	protected MockEndpoint mockEndpoint;

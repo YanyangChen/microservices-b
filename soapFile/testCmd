@@ -1,0 +1,5 @@
+curl -H "Content-Type: text/xml" -d @soapFile.xml -X POST https://203.142.127.224:18318/SendSmsService/services/SendSms/v3
+curl -H "Content-Type: text/xml" -d @soapFile.xml -X POST https://203.142.127.225:18318/SendSmsService/services/SendSms/v3
+nc -vz 203.142.127.224 18318
+nc -vz 203.142.127.225 18318
+nc -vz 10.31.62.51 8080

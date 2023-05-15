@@ -22,7 +22,7 @@ public class RestRoute extends RouteBuilder {
                 .post("nameAddress").type(NameAddress.class).route()
                 .routeId("RestRouteId")
                 .log(LoggingLevel.INFO, "Transformed body : ${body}")
-                .marshal().protobuf()
+                //.marshal().protobuf()
                 .log(LoggingLevel.INFO, "Transformed protobuf body : ${body}")
                 .convertBodyTo(String.class)
                 .to("file:src/data/output?fileName=outputFile.txt&fileExist=append&appendChars=\\n");

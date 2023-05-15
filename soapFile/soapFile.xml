@@ -1,0 +1,20 @@
+<soapenv:Envelope xmlns:soapenv="http://schemasxmisoap.org/soap/envelope/" xmlns.loc="http://www.csapi.org/schema/parlayx/sms/send/3_1/local"/>
+	<soapenv:Header>
+	<RequestSOAPHeader xmlns="http://www.huawei.com.cn/schema/common/v2_1">
+		<spId>A2P_IRD</spId>
+		<spPassword>ff769c893c035b2625996f72cf828cbb</spPassword>
+		<serviceId>A2P_IRD</serviceId>
+		<timeStamp>20230515</timeStamp>
+		<OA>8525122889143</0A>
+		<FA>8525122889143</FA>
+		<linkid>8525122889143</linkid>
+	</RequestSOAPHeader>
+	</soapenv:Header>
+	<soapeny:Body>
+		<loc:sendSms>
+			<loc:addresses>8525122889143</loc:addresses>
+			<loc:senderName>8525122889143</loc:senderName>
+			<loc:message>Hello WorId</loc:message>
+		</loc:sendSms>
+	</soapenv:Body>
+</spapenv:Envelope>
